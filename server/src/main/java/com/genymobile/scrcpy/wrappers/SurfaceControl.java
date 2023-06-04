@@ -16,6 +16,7 @@ public final class SurfaceControl {
 
     // see <https://android.googlesource.com/platform/frameworks/base.git/+/pie-release-2/core/java/android/view/SurfaceControl.java#305>
     public static final int POWER_MODE_OFF = 0;
+    public static final int POWER_MODE_NORMAL = 2;
 
     static {
         try {
