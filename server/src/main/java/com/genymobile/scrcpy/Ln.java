@@ -29,14 +29,14 @@ public final class Ln {
     public static void i(String message) {
         if (isEnabled(Level.INFO)) {
             Log.i(TAG, message);
-            System.out.println(PREFIX + "INFO: " + message);
+            System.out.print(PREFIX + "INFO: " + message + '\n');
         }
     }
 
     public static void e(String message, Throwable throwable) {
         if (isEnabled(Level.ERROR)) {
             Log.e(TAG, message, throwable);
-            System.out.println(PREFIX + "ERROR: " + message);
+            System.err.print(PREFIX + "ERROR: " + message + "\n");
             if (throwable != null) {
                 throwable.printStackTrace();
             }
