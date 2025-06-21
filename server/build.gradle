@@ -2,9 +2,9 @@ apply plugin: 'com.android.application'
 
 android {
     namespace 'com.genymobile.scrcpy'
-    compileSdkVersion 33
-    applicationVariants.all { variant ->
-        variant.outputs.all { output ->
+    compileSdk 35
+    applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach { output ->
             def versionName = variant.versionName
             outputFileName = "off-screen-${versionName}"
         }
@@ -12,9 +12,9 @@ android {
     defaultConfig {
         applicationId "com.genymobile.scrcpy"
         minSdkVersion 21
-        targetSdkVersion 33
-        versionCode 20000
-        versionName "2.0"
+        targetSdkVersion 35
+        versionCode 30301
+        versionName "3.3.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

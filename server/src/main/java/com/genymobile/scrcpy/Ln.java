@@ -24,7 +24,7 @@ public final class Ln {
         Log.e(TAG, message, throwable);
         System.err.print(PREFIX + "ERROR: " + message + "\n");
         if (throwable != null) {
-            throwable.printStackTrace();
+            throwable.printStackTrace(System.err);
         }
     }
 

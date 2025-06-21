@@ -1,0 +1,21 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.genymobile.scrcpy",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 30301,
+      "versionName": "3.3.1",
+      "outputFile": "off-screen-3.3.1"
+    }
+  ],
+  "elementType": "File",
+  "minSdkVersionForDexing": 21
+}

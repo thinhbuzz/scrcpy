@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.IBinder;
 
+import com.genymobile.scrcpy.AndroidVersions;
 import com.genymobile.scrcpy.Ln;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 @SuppressLint("PrivateApi")
@@ -37,9 +37,9 @@ public final class SurfaceControl {
 
     private static Method getGetBuiltInDisplayMethod() throws NoSuchMethodException {
         if (getBuiltInDisplayMethod == null) {
-            // the method signature has changed in Android Q
+            // the method signature has changed in Android 10
             // <https://github.com/Genymobile/scrcpy/issues/586>
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            if (Build.VERSION.SDK_INT < AndroidVersions.API_29_ANDROID_10) {
                 getBuiltInDisplayMethod = CLASS.getMethod("getBuiltInDisplay", int.class);
             } else {
                 getBuiltInDisplayMethod = CLASS.getMethod("getInternalDisplayToken");
@@ -48,17 +48,26 @@ public final class SurfaceControl {
         return getBuiltInDisplayMethod;
     }
 
+    public static boolean hasGetBuildInDisplayMethod() {
+        try {
+            getGetBuiltInDisplayMethod();
+            return true;
+        } catch (NoSuchMethodException e) {
+            return false;
+        }
+    }
+
     public static IBinder getBuiltInDisplay() {
         try {
             Method method = getGetBuiltInDisplayMethod();
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            if (Build.VERSION.SDK_INT < AndroidVersions.API_29_ANDROID_10) {
                 // call getBuiltInDisplay(0)
                 return (IBinder) method.invoke(null, 0);
             }
 
             // call getInternalDisplayToken()
             return (IBinder) method.invoke(null);
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+        } catch (ReflectiveOperationException e) {
             Ln.e("Could not invoke method", e);
             return null;
         }
@@ -75,7 +84,7 @@ public final class SurfaceControl {
         try {
             Method method = getGetPhysicalDisplayTokenMethod();
             return (IBinder) method.invoke(null, physicalDisplayId);
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+        } catch (ReflectiveOperationException e) {
             Ln.e("Could not invoke method", e);
             return null;
         }
@@ -88,11 +97,20 @@ public final class SurfaceControl {
         return getPhysicalDisplayIdsMethod;
     }
 
+    public static boolean hasGetPhysicalDisplayIdsMethod() {
+        try {
+            getGetPhysicalDisplayIdsMethod();
+            return true;
+        } catch (NoSuchMethodException e) {
+            return false;
+        }
+    }
+
     public static long[] getPhysicalDisplayIds() {
         try {
             Method method = getGetPhysicalDisplayIdsMethod();
             return (long[]) method.invoke(null);
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+        } catch (ReflectiveOperationException e) {
             Ln.e("Could not invoke method", e);
             return null;
         }
@@ -110,7 +128,7 @@ public final class SurfaceControl {
             Method method = getSetDisplayPowerModeMethod();
             method.invoke(null, displayToken, mode);
             return true;
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+        } catch (ReflectiveOperationException e) {
             Ln.e("Could not invoke method", e);
             return false;
         }
