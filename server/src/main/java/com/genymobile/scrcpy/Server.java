@@ -24,6 +24,5 @@ public final class Server {
             boolean setPowerModeOk = Device.setDisplayPower(true);
             Ln.i("Device screen turned on " + (setPowerModeOk ? "true" : "false"));
         }
-        System.exit(0);
     }
 }
