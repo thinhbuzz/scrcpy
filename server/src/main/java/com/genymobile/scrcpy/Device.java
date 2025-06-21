@@ -4,31 +4,18 @@ import android.os.Build;
 import android.os.IBinder;
 
 import com.genymobile.scrcpy.wrappers.DisplayControl;
-import com.genymobile.scrcpy.wrappers.ServiceManager;
 import com.genymobile.scrcpy.wrappers.SurfaceControl;
 
 public final class Device {
-    public static final int DISPLAY_ID_NONE = -1;
 
     public static final int POWER_MODE_OFF = SurfaceControl.POWER_MODE_OFF;
     public static final int POWER_MODE_NORMAL = SurfaceControl.POWER_MODE_NORMAL;
-
-    // The new display power method introduced in Android 15 does not work as expected:
-    // <https://github.com/Genymobile/scrcpy/issues/5530>
-    private static final boolean USE_ANDROID_15_DISPLAY_POWER = false;
 
     private Device() {
         // not instantiable
     }
 
-    public static boolean setDisplayPower(int displayId, boolean on) {
-        if (displayId == Device.DISPLAY_ID_NONE) {
-            return false;
-        }
-
-        if (USE_ANDROID_15_DISPLAY_POWER && Build.VERSION.SDK_INT >= AndroidVersions.API_35_ANDROID_15) {
-            return ServiceManager.getDisplayManager().requestDisplayPower(displayId, on);
-        }
+    public static boolean setDisplayPower(boolean on) {
 
         boolean applyToMultiPhysicalDisplays = Build.VERSION.SDK_INT >= AndroidVersions.API_29_ANDROID_10;
 
